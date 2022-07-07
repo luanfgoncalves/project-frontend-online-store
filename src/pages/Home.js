@@ -4,18 +4,20 @@ class Home extends React.Component {
   constructor() {
     super();
     this.state = {
-      isListEmpty: undefined,
+      isListEmpty: '',
     };
   }
 
-  handleListChange = (event) => {
-    this.setState((prevState) => ({
-        isListEmpty
-    }))
-    // console.log(event.target.value);
+  // verifica se tem itens na lista e atualiza o estado
+  handleListChange = ({ target }) => {
+    const { value } = target;
+    this.setState({
+      isListEmpty: value,
+    });
   }
 
   render() {
+    const { isListEmpty } = this.state;
     return (
       <form>
         <label htmlFor="search-bar">
@@ -25,9 +27,15 @@ class Home extends React.Component {
             type="text"
             name="search-bar"
             placeholder="Faça sua busca"
-            onChange={ (event) => this.handleListChange(event) }
+            onChange={ this.handleListChange }
+            value={ isListEmpty }
           />
         </label>
+        {!isListEmpty
+        && (
+          <p data-testid="home-initial-message">
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </p>)}
       </form>
     );
   }

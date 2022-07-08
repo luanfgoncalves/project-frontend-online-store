@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import CategoriesList from '../components/CategoriesList';
+import ProductsList from '../components/ProductsList';
 
 class Home extends React.Component {
   constructor() {
@@ -9,6 +10,11 @@ class Home extends React.Component {
     this.state = {
       isListEmpty: '',
       apiCategories: [],
+      // storeProducts: {
+      //   title: '',
+      //   thumbnail:'',
+      //   price
+      // }
     };
   }
 
@@ -30,6 +36,10 @@ class Home extends React.Component {
     this.setState({
       apiCategories: categoriesData,
     });
+  }
+
+  test = (param) => {
+    console.log(param);
   }
 
   render() {
@@ -70,6 +80,10 @@ class Home extends React.Component {
           />
 
         </form>
+
+        <ProductsList
+          productsListProp={ this.test }
+        />
 
       </div>
     );

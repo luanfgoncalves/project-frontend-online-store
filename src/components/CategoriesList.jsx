@@ -12,7 +12,7 @@ class CategoriesList extends React.Component {
             data-testid="category"
             key={ id }
           >
-            <input type="radio" id={ id } name="radio-categories" />
+            <input type="radio" id={ id } name="radio-categories" checked={  } />
             { name }
           </label>)) }
       </div>

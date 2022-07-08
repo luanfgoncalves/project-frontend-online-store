@@ -43,42 +43,42 @@
 
 /* reset */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 :root {
   /* colors */
+  --accent: #2fc18c;
+  --black: #222;
+  --blue: #006dfb;
+  --bodyFont: 'Nunito', sans-serif;
+  --borderRadius: 0.25rem;
   --green-dark: #036b52;
   --green-light: #d1e7dd;
-  --blue: #006dfb;
-  --purple: #41197f;
-  --black: #222;
-  --white: #fff;
-  --red-light: #f8d7da;
-  --red-dark: #dc3545;
-  /* 60 30 10 */
-  --primary: var(--white);
-  --secondary: #1a1b1c;
-  --accent: #2fc18c;
   --grey-50: #f8fafc;
   --grey-200: #e2e8f0;
-  /* box shadows */
+  --headingFont: 'Roboto', sans-serif;
+  --letterSpacing: 1px;
+  --max-width: 1120px;
+  --primary: var(--white);
+  --purple: #41197f;
+  --red-dark: #dc3545;
+  --red-light: #f8d7da;
+  --secondary: #1a1b1c;
   --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.2),
     0 4px 6px -2px rgba(0, 0, 0, 0.08);
+  --transition: 0.3s ease-in-out all;
+  --white: #fff;
+  /* 60 30 10 */
+  /* box shadows */
 
   /* config blablabla */
-  --borderRadius: 0.25rem;
-  --max-width: 1120px;
-  --transition: 0.3s ease-in-out all;
   /* font */
-  --letterSpacing: 1px;
-  --headingFont: 'Roboto', sans-serif;
-  --bodyFont: 'Nunito', sans-serif;
 }
 
 ::selection {
@@ -93,10 +93,10 @@ html {
 } /*16px*/
 
 body {
+  color: #000000;
   font-family: var(--bodyFont);
   font-weight: 400;
   line-height: 1.75;
-  color: #000000;
 }
 
 p {
@@ -108,18 +108,18 @@ h2,
 h3,
 h4,
 h5 {
-  margin: 0;
-  margin-bottom: 1.38rem;
   font-family: var(--headingFont);
   font-weight: 400;
-  line-height: 1.3;
-  text-transform: capitalize;
   letter-spacing: var(--letterSpacing);
+  line-height: 1.3;
+  margin: 0;
+  margin-bottom: 1.38rem;
+  text-transform: capitalize;
 }
 
 h1 {
-  margin-top: 0;
   font-size: 3.052rem;
+  margin-top: 0;
 }
 
 h2 {
@@ -145,30 +145,30 @@ small,
 
 /* image */
 .img {
-  width: 100%;
   display: block;
   object-fit: cover;
+  width: 100%;
 }
 
 /* buttons */
 button {
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: var(--white);
   background: var(--accent);
   border: transparent;
   border-radius: var(--borderRadius);
-  letter-spacing: var(--letterSpacing);
-  padding: 0.375rem 0.75rem;
   box-shadow: var(--shadow-1);
+  color: var(--white);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.2rem;
+  letter-spacing: var(--letterSpacing);
+  margin-right: 1rem;
+  padding: 0.375rem 0.75rem;
   /* transition: var(--transition); */
   text-transform: capitalize;
-  display: inline-block;
-  margin-right: 1rem;
 }
 button:hover {
-  filter: brightness(110%);
   box-shadow: var(--shadow-2);
+  filter: brightness(110%);
 }
 
 button:active {
@@ -176,8 +176,8 @@ button:active {
 }
 
 button:disabled {
-  opacity: 0.5;
   cursor: wait;
+  opacity: 0.5;
 }
 
 /* form */
@@ -191,34 +191,34 @@ form {
 input,
 textarea,
 select {
-  width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.7rem 0.75rem;
-  border-radius: var(--borderRadius);
   background: var(--grey-50);
   border: 1px solid var(--grey-200);
+  border-radius: var(--borderRadius);
+  margin-bottom: 1rem;
+  padding: 0.7rem 0.75rem;
+  width: 100%;
 }
 
 .container {
-  max-width: var(--max-width);
   margin: 0 auto;
+  max-width: var(--max-width);
 }
 
 /* alerts */
 .alert {
-  padding: 0.375rem 0.75rem;
-  margin-bottom: 1rem;
   border-color: transparent;
   border-radius: var(--borderRadius);
+  margin-bottom: 1rem;
+  padding: 0.375rem 0.75rem;
 }
 
 .danger {
-  color: var(--red-dark);
   background: var(--red-light);
+  color: var(--red-dark);
 }
 .success {
-  color: var(--green-dark);
   background: var(--green-light);
+  color: var(--green-dark);
 }
 
 /* Reterencia: https://gist.github.com/thiagobraddock/ff73862f775e34e9c31b46a751840eec */

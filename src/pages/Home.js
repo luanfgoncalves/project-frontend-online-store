@@ -1,12 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getCategories } from '../services/api';
+import CategoriesList from '../components/CategoriesList';
 
 class Home extends React.Component {
   constructor() {
     super();
     this.state = {
       isListEmpty: '',
+      apiCategories: [],
     };
+  }
+
+  componentDidMount() {
+    this.startApi();
   }
 
   // verifica se tem itens na lista e atualiza o estado
@@ -17,16 +24,28 @@ class Home extends React.Component {
     });
   }
 
+  startApi = async () => {
+    const categories = await getCategories();
+    const categoriesData = await categories;
+    this.setState({
+      apiCategories: categoriesData,
+    });
+  }
+
   render() {
-    const { isListEmpty } = this.state;
+    const { isListEmpty, apiCategories } = this.state;
     return (
       <div>
+
         <Link data-testid="shopping-cart-button" to="/shopcart">
           Meu Carrinho
         </Link>
+
         <form>
+
           <label htmlFor="search-bar">
             Busca:
+
             <input
               id="search-bar"
               type="text"
@@ -36,6 +55,7 @@ class Home extends React.Component {
               value={ isListEmpty }
             />
           </label>
+
           {
             !isListEmpty
         && (
@@ -44,7 +64,13 @@ class Home extends React.Component {
           </p>
         )
           }
+
+          <CategoriesList
+            apiCategoriesProp={ apiCategories }
+          />
+
         </form>
+
       </div>
     );
   }

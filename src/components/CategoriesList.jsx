@@ -5,15 +5,18 @@ class CategoriesList extends React.Component {
   render() {
     const { apiCategoriesProp } = this.props;
     return (
-      <div>
+      <div className="categories-list-container">
         { apiCategoriesProp.map(({ name, id }) => (
           <label
             htmlFor={ id }
             data-testid="category"
             key={ id }
+            className="label-categories"
           >
-            <input type="radio" id={ id } name="radio-categories" />
-            { name }
+            <div>
+              <input className="radio" type="radio" id={ id } name="radio-categories" />
+              { name }
+            </div>
           </label>)) }
       </div>
     );

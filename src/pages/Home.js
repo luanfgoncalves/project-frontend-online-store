@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import CategoriesList from '../components/CategoriesList';
+import ProductRenderList from '../components/ProductRender';
 
 class Home extends React.Component {
   constructor() {
     super();
     this.state = {
-      isListEmpty: '',
+      emptyFinder: false,
+      searchInput: '',
+      queryResults: [],
       apiCategories: [],
     };
   }
@@ -16,11 +19,10 @@ class Home extends React.Component {
     this.startApi();
   }
 
-  // verifica se tem itens na lista e atualiza o estado
   handleListChange = ({ target }) => {
     const { value } = target;
     this.setState({
-      isListEmpty: value,
+      searchInput: value,
     });
   }
 
@@ -32,43 +34,81 @@ class Home extends React.Component {
     });
   }
 
+  requestAPI = async () => {
+    const { searchInput } = this.state;
+    const { results } = await getProductsFromCategoryAndQuery(null, searchInput);
+    if (results.length === 0) {
+      this.setState({ emptyFinder: true });
+    } else {
+      this.setState({ emptyFinder: false });
+    }
+    this.setState({
+      queryResults: results,
+    });
+  }
+
   render() {
-    const { isListEmpty, apiCategories } = this.state;
+    const { searchInput, apiCategories, queryResults, emptyFinder } = this.state;
     return (
-      <div>
+      <div className="main-container">
+        <div className="links-container">
+          <Link data-testid="shopping-cart-button" to="/shopcart">
+            Meu Carrinho
+          </Link>
+        </div>
+        {
 
-        <Link data-testid="shopping-cart-button" to="/shopcart">
-          Meu Carrinho
-        </Link>
-
+        }
         <form>
+          <div>
+            <label htmlFor="search-bar">
+              Busca:
 
-          <label htmlFor="search-bar">
-            Busca:
+              <input
+                data-testid="query-input"
+                id="search-bar"
+                type="text"
+                name="search-bar"
+                placeholder="Faça sua busca"
+                onChange={ this.handleListChange }
+                value={ searchInput }
+              />
+            </label>
+            <button
+              data-testid="query-button"
+              type="button"
+              onClick={ this.requestAPI }
+            >
+              Buscar
 
-            <input
-              id="search-bar"
-              type="text"
-              name="search-bar"
-              placeholder="Faça sua busca"
-              onChange={ this.handleListChange }
-              value={ isListEmpty }
-            />
-          </label>
+            </button>
+          </div>
 
+          <div className="query-results-container">
+            {
+              emptyFinder ? <h2>Nenhum produto foi encontrado</h2> : (
+                queryResults
+                  .map(({ title, thumbnail, price, id }) => (
+                    <ProductRenderList
+                      key={ id }
+                      propTitle={ title }
+                      propThumbnail={ thumbnail }
+                      propPrice={ price }
+                    />
+                  )))
+            }
+          </div>
           {
-            !isListEmpty
+            !searchInput
         && (
           <p data-testid="home-initial-message">
             Digite algum termo de pesquisa ou escolha uma categoria.
           </p>
         )
           }
-
           <CategoriesList
             apiCategoriesProp={ apiCategories }
           />
-
         </form>
 
       </div>

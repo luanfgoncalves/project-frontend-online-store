@@ -41,6 +41,34 @@
   }
 } */
 
+
+.query-results-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  margin-left: auto;
+  padding: 5px;
+  width: 900px;
+}
+
+.query-results {
+  background-color: rgb(212, 195, 195);
+  border: 3px solid rgba(0, 0, 0, 0.125);
+  border-radius: 2px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.418);
+  color: black;
+  display: flex;
+  flex-direction: column;
+  height: 20%;
+  margin: 10px;
+  width: 300px;
+}
+
+.categories-list-container {
+  flex-direction: column;
+  width: 250px;
+}
+
 /* reset */
 * {
   box-sizing: border-box;

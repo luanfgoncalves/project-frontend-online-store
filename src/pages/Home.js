@@ -16,6 +16,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    console.log('montou home');
     this.startApi();
   }
 
@@ -38,21 +39,15 @@ class Home extends React.Component {
   productsRecovery = async (categoryId, query) => {
     const products = await getProductsFromCategoryAndQuery(categoryId, query);
     const response = await products;
-    // const { results } = response;
     this.setState({
-      // storeProducts: {
-      //   title: results.title,
-      //   thumbnail: results.thumbnail,
-      //   price: results.price,
-      // },
       storeProducts: response,
     });
   }
 
   radioEventListener = (param) => {
-    // console.log(param);
+    const parameter = param.toLowerCase().normalize('NFD').replace(/[^a-zA-Zs]/g, '');
     this.setState({
-      choosenCategory: param, // fazer função que tire maiúsculo, acento e espaços.
+      choosenCategory: parameter,
     });
   }
 

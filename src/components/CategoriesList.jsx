@@ -16,7 +16,9 @@ class CategoriesList extends React.Component {
               type="radio"
               id={ id }
               name="radio-categories"
-              onChange={ () => radioInput(name) }
+              onChange={ () => {
+                radioInput(name);
+              } }
 
             />
             { name }

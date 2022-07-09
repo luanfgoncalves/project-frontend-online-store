@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class CategoriesList extends React.Component {
   render() {
-    const { apiCategoriesProp } = this.props;
+    const { apiCategoriesProp, radioInput } = this.props;
     return (
       <div>
         { apiCategoriesProp.map(({ name, id }) => (
@@ -12,7 +12,13 @@ class CategoriesList extends React.Component {
             data-testid="category"
             key={ id }
           >
-            <input type="radio" id={ id } name="radio-categories" checked={  } />
+            <input
+              type="radio"
+              id={ id }
+              name="radio-categories"
+              onChange={ () => radioInput(name) }
+
+            />
             { name }
           </label>)) }
       </div>
@@ -22,6 +28,7 @@ class CategoriesList extends React.Component {
 
 CategoriesList.propTypes = {
   apiCategoriesProp: PropTypes.arrayOf(Object).isRequired,
+  radioInput: PropTypes.func.isRequired,
 };
 
 export default CategoriesList;

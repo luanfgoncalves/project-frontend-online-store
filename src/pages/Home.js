@@ -2,19 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import CategoriesList from '../components/CategoriesList';
-import ProductsList from '../components/ProductsList';
+// import ProductsList from '../components/ProductsList';
 
 class Home extends React.Component {
   constructor() {
     super();
     this.state = {
+      choosenCategory: '',
       isListEmpty: '',
       apiCategories: [],
-      // storeProducts: {
-      //   title: '',
-      //   thumbnail:'',
-      //   price
-      // }
+      storeProducts: [],
     };
   }
 
@@ -38,12 +35,30 @@ class Home extends React.Component {
     });
   }
 
-  test = (param) => {
-    console.log(param);
+  productsRecovery = async (categoryId, query) => {
+    const products = await getProductsFromCategoryAndQuery(categoryId, query);
+    const response = await products;
+    // const { results } = response;
+    this.setState({
+      // storeProducts: {
+      //   title: results.title,
+      //   thumbnail: results.thumbnail,
+      //   price: results.price,
+      // },
+      storeProducts: response,
+    });
+  }
+
+  radioEventListener = (param) => {
+    // console.log(param);
+    this.setState({
+      choosenCategory: param, // fazer função que tire maiúsculo, acento e espaços.
+    });
   }
 
   render() {
-    const { isListEmpty, apiCategories } = this.state;
+    const { isListEmpty, apiCategories, choosenCategory, storeProducts } = this.state;
+    console.log(storeProducts); // só para tirar o erro de lint
     return (
       <div>
 
@@ -51,7 +66,7 @@ class Home extends React.Component {
           Meu Carrinho
         </Link>
 
-        <form>
+        <form onChange={ () => this.productsRecovery(choosenCategory, isListEmpty) }>
 
           <label htmlFor="search-bar">
             Busca:
@@ -77,13 +92,10 @@ class Home extends React.Component {
 
           <CategoriesList
             apiCategoriesProp={ apiCategories }
+            radioInput={ this.radioEventListener }
           />
 
         </form>
-
-        <ProductsList
-          productsListProp={ this.test }
-        />
 
       </div>
     );

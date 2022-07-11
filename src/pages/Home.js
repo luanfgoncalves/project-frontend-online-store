@@ -20,11 +20,26 @@ class Home extends React.Component {
     this.startApi();
   }
 
+  componentDidUpdate() {
+    console.log('atualizou home');
+    const { choosenCategory, isListEmpty } = this.state;
+    if (choosenCategory) {
+      this.productsRecovery(choosenCategory, isListEmpty);
+      this.updateChoosenCategory();
+    }
+  }
+
   // verifica se tem itens na lista e atualiza o estado
   handleListChange = ({ target }) => {
     const { value } = target;
     this.setState({
       isListEmpty: value,
+    });
+  }
+
+  updateChoosenCategory = () => {
+    this.setState({
+      choosenCategory: '',
     });
   }
 
@@ -45,14 +60,13 @@ class Home extends React.Component {
   }
 
   radioEventListener = (param) => {
-    const parameter = param.toLowerCase().normalize('NFD').replace(/[^a-zA-Zs]/g, '');
     this.setState({
-      choosenCategory: parameter,
+      choosenCategory: param,
     });
   }
 
   render() {
-    const { isListEmpty, apiCategories, choosenCategory, storeProducts } = this.state;
+    const { isListEmpty, apiCategories, storeProducts } = this.state;
     console.log(storeProducts); // só para tirar o erro de lint
     return (
       <div>
@@ -61,7 +75,7 @@ class Home extends React.Component {
           Meu Carrinho
         </Link>
 
-        <form onChange={ () => this.productsRecovery(choosenCategory, isListEmpty) }>
+        <form>
 
           <label htmlFor="search-bar">
             Busca:

@@ -1,30 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
-class CategoriesList extends React.Component {
+class CategoryList extends React.Component {
   render() {
-    const { apiCategoriesProp } = this.props;
+    const { categoryName, categoryId, prop } = this.props;
     return (
-      <div className="categories-list-container">
-        { apiCategoriesProp.map(({ name, id }) => (
-          <label
-            htmlFor={ id }
+      <li>
+        <label htmlFor="Category">
+          <input
+            value={ categoryId }
+            name="Category"
+            type="radio"
+            onClick={ prop }
             data-testid="category"
-            key={ id }
-            className="label-categories"
-          >
-            <div>
-              <input className="radio" type="radio" id={ id } name="radio-categories" />
-              { name }
-            </div>
-          </label>)) }
-      </div>
+          />
+          {categoryName}
+        </label>
+      </li>
     );
   }
 }
 
-CategoriesList.propTypes = {
-  apiCategoriesProp: PropTypes.arrayOf(Object).isRequired,
-};
+CategoryList.propTypes = {
+  categoryName: propTypes.string,
+  categoryId: propTypes.string,
+}.isRequired;
 
-export default CategoriesList;
+export default CategoryList;

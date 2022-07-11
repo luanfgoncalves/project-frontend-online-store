@@ -1,21 +1,20 @@
-import React from 'react';
-import './App.css';
+import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Home from './pages/Home';
+import HomePage from './pages/Home';
 import ShopCartComponent from './pages/ShopCart';
-// import { getCategories, getProductsFromCategoryAndQuery } from './services/api';
+import './App.css';
+import ProductCardPage from './pages/ProductDetails';
 
-class App extends React.Component {
+export class App extends Component {
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={ Home } />
+          <Route exact path="/" component={ HomePage } />
           <Route exact path="/shopcart" component={ ShopCartComponent } />
           <Route
-            exact
-            path="details:id"
-            // render={ (props) => <ProductDetailsCard { ...props } /> }
+            path="/details/:id"
+            render={ (props) => <ProductCardPage { ...props } /> }
           />
         </Switch>
       </BrowserRouter>

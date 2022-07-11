@@ -1,117 +1,113 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
-import CategoriesList from '../components/CategoriesList';
-import ProductRenderList from '../components/ProductRender';
+import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
+import CategoryList from '../components/CategoriesList';
+import ProductRender from '../components/ProductRender';
 
 class Home extends React.Component {
   constructor() {
     super();
+
     this.state = {
-      emptyFinder: false,
-      searchInput: '',
-      queryResults: [],
-      apiCategories: [],
+      categories: [],
+      list: [],
+      inputValue: '',
+      disableSearchBtn: true,
+      emptyFinder: null,
     };
   }
 
-  componentDidMount() {
-    this.startApi();
+  async componentDidMount() {
+    this.setState({ categories: await getCategories() });
   }
 
-  handleListChange = ({ target }) => {
-    const { value } = target;
-    this.setState({
-      searchInput: value,
+  getCategoriesById = async ({ target: { value } }) => {
+    const { results } = await getProductsFromCategoryAndQuery(value, null);
+    this.setState({ emptyFinder: false, list: results,
     });
   }
 
-  startApi = async () => {
-    const categories = await getCategories();
-    const categoriesData = await categories;
-    this.setState({
-      apiCategories: categoriesData,
-    });
-  }
+  handleChange = ({ target: { value } }) => ((value.length > 0) ? (
+    this.setState({ inputValue: value, disableSearchBtn: false, emptyFinder: false })
+  ) : (
+    this.setState({ inputValue: value, disableSearchBtn: true, emptyFinder: null })
+  ));
 
   requestAPI = async () => {
-    const { searchInput } = this.state;
-    const { results } = await getProductsFromCategoryAndQuery(null, searchInput);
+    const { inputValue } = this.state;
+    const { results } = await getProductsFromCategoryAndQuery(null, inputValue);
     if (results.length === 0) {
       this.setState({ emptyFinder: true });
     } else {
-      this.setState({ emptyFinder: false });
+      this.setState({ list: results, emptyFinder: false });
     }
-    this.setState({
-      queryResults: results,
-    });
   }
 
   render() {
-    const { searchInput, apiCategories, queryResults, emptyFinder } = this.state;
+    const { list, categories, inputValue, disableSearchBtn, emptyFinder } = this.state;
     return (
-      <div className="main-container">
-        <div className="links-container">
-          <Link data-testid="shopping-cart-button" to="/shopcart">
-            Meu Carrinho
-          </Link>
-        </div>
-        {
-
-        }
-        <form>
-          <div>
-            <label htmlFor="search-bar">
-              Busca:
-
+      <>
+        <Link data-testid="shopping-cart-button" to="/shopcart">
+          Carrinho
+        </Link>
+        <div>
+          <div className="search-bar-container">
+            <label htmlFor="search" className="teste">
               <input
-                data-testid="query-input"
-                id="search-bar"
+                className="search-bar"
                 type="text"
-                name="search-bar"
-                placeholder="Faça sua busca"
-                onChange={ this.handleListChange }
-                value={ searchInput }
+                name="search"
+                data-testid="query-input"
+                value={ inputValue }
+                onChange={ this.handleChange }
               />
             </label>
             <button
               data-testid="query-button"
               type="button"
               onClick={ this.requestAPI }
+              disabled={ disableSearchBtn }
             >
               Buscar
-
             </button>
           </div>
-
-          <div className="query-results-container">
-            {
-              emptyFinder ? <h2>Nenhum produto foi encontrado</h2> : (
-                queryResults
-                  .map(({ title, thumbnail, price, id }) => (
-                    <ProductRenderList
-                      key={ id }
-                      propTitle={ title }
-                      propThumbnail={ thumbnail }
-                      propPrice={ price }
-                    />
-                  )))
-            }
+          <div className="container">
+            <ul className="categories-list-container">
+              {categories.map(({ id, name }) => (
+                <CategoryList
+                  key={ id }
+                  categoryName={ name }
+                  categoryId={ id }
+                  prop={ this.getCategoriesById }
+                />))}
+            </ul>
+            {emptyFinder === null ? (
+              <div className="message-default">
+                <h4 data-testid="home-initial-message">
+                  Digite algum termo de pesquisa ou escolha uma categoria.
+                </h4>
+              </div>)
+              : (
+                <div className="query-results-container">
+                  {emptyFinder === true ? (
+                    <div className="message-default">
+                      <h4>Nenhum produto foi encontrado</h4>
+                    </div>
+                  )
+                    : list.map(({ id, title, thumbnail, price }) => (
+                      <ProductRender
+                        key={ id }
+                        propTitle={ title }
+                        propThumbnail={ thumbnail }
+                        propPrice={ price }
+                        id={ id }
+                      />
+                    ))}
+                </div>
+              )}
           </div>
-          {
-            !searchInput
-        && (
-          <p data-testid="home-initial-message">
-            Digite algum termo de pesquisa ou escolha uma categoria.
-          </p>
-        )
-          }
-          <CategoriesList
-            apiCategoriesProp={ apiCategories }
-          />
-        </form>
-
-      </div>
+        </div>
+      </>
     );
   }
 }

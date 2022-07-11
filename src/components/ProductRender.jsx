@@ -1,22 +1,36 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-export class ProductRender extends Component {
+export class ProductRenderList extends Component {
   render() {
-    const { propTitle, propThumbnail, propPrice } = this.props;
+    const { propTitle, propThumbnail, propPrice, id } = this.props;
     return (
+
       <div className="query-results" data-testid="product">
-        <h3>{ propTitle }</h3>
-        <img src={ propThumbnail } alt="" />
-        <span>{ propPrice }</span>
+        <h3>{propTitle}</h3>
+        <Link
+          to={ `/details/${id}` }
+          data-testid="product-detail-link"
+        >
+          <img
+            data-testid="product-detail-link"
+            src={ propThumbnail }
+            alt={ propTitle }
+          />
+        </Link>
+        <span>
+          {`Preço R$: ${propPrice}`}
+        </span>
       </div>
+
     );
   }
 }
 
-ProductRender.propTypes = {
+ProductRenderList.propTypes = {
   propTitle: PropTypes.string,
   propThumbnail: PropTypes.string,
   propPrice: PropTypes.string,
 }.isRequired;
-export default ProductRender;
+export default ProductRenderList;

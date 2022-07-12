@@ -9,7 +9,6 @@ export class ProductCard extends Component {
     this.state = {
       productObj: '',
       addedToCart: [],
-      cartProducts: [],
     };
   }
 
@@ -26,53 +25,52 @@ export class ProductCard extends Component {
     });
   }
 
-addItemToLocalStorage = (product) => {
-  console.log(product.id);
-  localStorage.setItem('cart', JSON.stringify(product.id));
-  const localStorageCart = JSON.parse(localStorage.getItem('cart'));
-  if (localStorageCart.some((element) => element.id === product.id)) {
-    let count = Number(localStorage.getItem(product.id));
-    localStorage.setItem(product.id, count += 1);
+addItemToLocalStorage = (items) => {
+  const shopCart = JSON.parse(localStorage.getItem('shopcart'));
+  if (shopCart.some((product) => product.id === items.id)) {
+    let count = Number(localStorage.getItem(items.id));
+    localStorage.setItem(items.id, count += 1);
   } else {
-    const carrinho = [...localStorageCart, product];
-    localStorage.setItem('cart', JSON.stringify(carrinho));
-    localStorage.setItem(product.id, 1);
+    const addOnce = [...shopCart, items];
+    localStorage.setItem('shopcart', JSON.stringify(addOnce));
+    localStorage.setItem(items.id, 1);
   }
 }
 
-AddToCart = (product) => {
-  console.log(product);
-  this.setState((prevState) => ({
-    cartProducts: [...prevState.cartProducts, product],
-  }), this.addItemToLocalStorage(product));
-}
+  addItemToCart = () => {
+    const { productObj } = this.state;
+    this.setState((prevState) => ({
+      addedToCart: [...prevState.addedToCart, productObj],
+    }), this.addItemToLocalStorage(productObj));
+  }
 
-render() {
-  const { productObj } = this.state;
-  return (
-    <div data-testid="product-detail-name">
-      <h1>{productObj.title}</h1>
-      <img src={ productObj.thumbnail } alt="" />
-      <h2>{productObj.price}</h2>
-      <p>{productObj.warranty}</p>
-      <div>
-        <button
-          type="button"
-          data-testid="product-detail-add-to-cart"
-          onClick={ () => this.AddToCart(productObj) }
-        >
-          Adicionar ao Carrinho
+  render() {
+    const { productObj } = this.state;
+    return (
+      <div data-testid="product-detail-name">
+        <h1>{productObj.title}</h1>
+        <img src={ productObj.thumbnail } alt="" />
+        <h2>{productObj.price}</h2>
+        <p>{productObj.warranty}</p>
+        <div>
+          <button
+            type="button"
+            data-testid="product-detail-add-to-cart"
+            onClick={ this.addItemToCart }
+          >
+            Adicionar ao Carrinho
 
-        </button>
-        <Link
-          to="/shopCart"
-        >
-          Carrinho
-        </Link>
+          </button>
+          <Link
+            to="/shopCart"
+            data-testid="shopping-cart-button"
+          >
+            Carrinho
+          </Link>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 }
 
 export default ProductCard;

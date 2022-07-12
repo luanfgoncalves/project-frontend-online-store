@@ -22,6 +22,13 @@ export class ProductRenderList extends Component {
         <span>
           {`Preço R$: ${propPrice}`}
         </span>
+        <button
+          type="button"
+          data-testid="product-add-to-cart"
+        >
+          Adicionar ao carringho
+
+        </button>
       </div>
 
     );

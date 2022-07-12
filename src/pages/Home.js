@@ -95,13 +95,13 @@ class Home extends React.Component {
                       <h4>Nenhum produto foi encontrado</h4>
                     </div>
                   )
-                    : list.map(({ id, title, thumbnail, price }) => (
+                    : list.map((item) => (
                       <ProductRender
-                        key={ id }
-                        propTitle={ title }
-                        propThumbnail={ thumbnail }
-                        propPrice={ price }
-                        id={ id }
+                        key={ item.id }
+                        propTitle={ item.title }
+                        propThumbnail={ item.thumbnail }
+                        propPrice={ item.price }
+                        id={ item.id }
                       />
                     ))}
                 </div>

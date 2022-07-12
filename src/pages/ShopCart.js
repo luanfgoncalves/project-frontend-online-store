@@ -5,43 +5,107 @@ export class ShopCart extends Component {
     super(props);
 
     this.state = {
-      items: [],
+      shopCartItems: [],
     };
   }
 
   componentDidMount() {
-    this.getLocalStorageFunction();
+    this.getLocalStorage();
   }
 
-  getLocalStorageFunction = () => {
-    const newCart = JSON.parse(localStorage.getItem('shopcart'));
+  getLocalStorage = () => {
+    if (!localStorage.getItem('shopcart')) return localStorage.setItem('shopcart', '[]');
+    const shopCart = JSON.parse(localStorage.getItem('shopcart'));
+    const cartRendered = shopCart.map((item) => {
+      const quantity = localStorage.getItem(item.id);
+      item.quantity = quantity;
+      return item;
+    });
     this.setState({
-      items: newCart,
+      shopCartItems: cartRendered,
     });
   }
 
+  handleCount = (id, { target: { value } }) => {
+    const { shopCartItems } = this.state;
+    const initialCount = 1;
+    let quantify = Number(localStorage.getItem(id));
+    if (value === 'decrease' && quantify === initialCount) {
+      return false;
+    }
+    if (value === 'increase') {
+      quantify += 1;
+    }
+    if (value === 'decrease') {
+      quantify -= 1;
+    }
+    localStorage.setItem(id, quantify);
+    const newCart = shopCartItems.map((product) => {
+      if (product.id === id) {
+        product.quantity = quantify;
+        return product;
+      }
+      return product;
+    });
+    this.setState({
+      shopCartItems: newCart,
+    });
+  }
+
+  clearShopCart = () => {
+    localStorage.removeItem('shopcart');
+  }
+
   render() {
-    const { items } = this.state;
+    const { shopCartItems } = this.state;
     return (
       <div>
         <h1>Carrinho de compras</h1>
-        {(!items)
-          ? (
-            <p
-              data-testid="shopping-cart-empty-message"
-            >
-              Seu carrinho está vazio
-            </p>)
-          : items.map((product) => (
-            <div key={ product.id }>
-              <p data-testid="shopping-cart-product-name">{product.title}</p>
-              <p>{product.price}</p>
-              <p data-testid="shopping-cart-product-quantity">
-                {localStorage.getItem(product.id)}
-
+        {
+          (shopCartItems.length === 0)
+            ? (
+              <p
+                data-testid="shopping-cart-empty-message"
+              >
+                Seu carrinho está vazio
               </p>
-            </div>
-          ))}
+            )
+            : shopCartItems.map(({ id, title, price, quantity }) => (
+              <div key={ id }>
+                <h2 data-testid="shopping-cart-product-name">{title}</h2>
+                <p>{price}</p>
+                <button
+                  data-testid="product-decrease-quantity"
+                  onClick={ (value) => this.handleCount(id, value) }
+                  type="button"
+                  value="decrease"
+                >
+                  -
+
+                </button>
+                <p data-testid="shopping-cart-product-quantity">
+                  {quantity}
+                </p>
+                <button
+                  data-testid="product-increase-quantity"
+                  type="button"
+                  onClick={ (value) => this.handleCount(id, value) }
+                  value="increase"
+                >
+                  +
+
+                </button>
+                <div>
+                  <button
+                    type="button"
+                    onClick={ this.clearShopCart }
+                  >
+                    Limpar carrinho
+                  </button>
+                </div>
+              </div>
+            ))
+        }
 
       </div>
 

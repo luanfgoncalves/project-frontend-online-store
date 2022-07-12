@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export class ProductRenderList extends Component {
   render() {
-    const { propTitle, propThumbnail, propPrice, id } = this.props;
+    const { propTitle, propThumbnail, propPrice, id, cartButton } = this.props;
     return (
 
       <div className="query-results" data-testid="product">
@@ -24,9 +24,10 @@ export class ProductRenderList extends Component {
         </span>
         <button
           type="button"
+          onClick={ cartButton }
           data-testid="product-add-to-cart"
         >
-          Adicionar ao carringho
+          Adicionar ao carrinho
 
         </button>
       </div>

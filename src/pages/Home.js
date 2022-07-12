@@ -19,6 +19,7 @@ class Home extends React.Component {
 
   async componentDidMount() {
     this.setState({ categories: await getCategories() });
+    if (!localStorage.getItem('shopcart')) return localStorage.setItem('shopcart', '[]');
   }
 
   getCategoriesById = async ({ target: { value } }) => {

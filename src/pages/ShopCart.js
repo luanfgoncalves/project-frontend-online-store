@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export class ShopCart extends Component {
   constructor(props) {
@@ -70,40 +71,54 @@ export class ShopCart extends Component {
                 Seu carrinho está vazio
               </p>
             )
-            : shopCartItems.map(({ id, title, price, quantity }) => (
+            : shopCartItems.map(({ id, title, price, quantity, thumbnail }) => (
               <div key={ id }>
-                <h2 data-testid="shopping-cart-product-name">{title}</h2>
-                <p>{price}</p>
-                <button
-                  data-testid="product-decrease-quantity"
-                  onClick={ (value) => this.handleCount(id, value) }
-                  type="button"
-                  value="decrease"
-                >
-                  -
-
-                </button>
-                <p data-testid="shopping-cart-product-quantity">
-                  {quantity}
-                </p>
-                <button
-                  data-testid="product-increase-quantity"
-                  type="button"
-                  onClick={ (value) => this.handleCount(id, value) }
-                  value="increase"
-                >
-                  +
-
-                </button>
                 <div>
+                  <h2 data-testid="shopping-cart-product-name">{title}</h2>
+                  <p>{price}</p>
+                  <img src={ thumbnail } alt={ title } />
+                  <div>
+                    <button
+                      data-testid="product-decrease-quantity"
+                      onClick={ (value) => this.handleCount(id, value) }
+                      type="button"
+                      value="decrease"
+                    >
+                      -
+
+                    </button>
+                    <p data-testid="shopping-cart-product-quantity">
+                      {quantity}
+                    </p>
+                    <button
+                      data-testid="product-increase-quantity"
+                      type="button"
+                      onClick={ (value) => this.handleCount(id, value) }
+                      value="increase"
+                    >
+                      +
+
+                    </button>
+                  </div>
+                </div>
+                <div className="buttons-container">
                   <button
                     type="button"
                     onClick={ this.clearShopCart }
                   >
-                    Limpar carrinho
+                    Limpar o carrinho
                   </button>
+                  <Link to="/checkout">
+                    <button
+                      data-testid="checkout-products"
+                      type="button"
+                    >
+                      Fazer checkout
+                    </button>
+                  </Link>
                 </div>
               </div>
+
             ))
         }
 

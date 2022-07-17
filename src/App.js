@@ -4,6 +4,7 @@ import HomePage from './pages/Home';
 import ShopCartComponent from './pages/ShopCart';
 import './App.css';
 import ProductCardPage from './pages/ProductDetails';
+import CheckoutPage from './pages/Checkout';
 
 export class App extends Component {
   render() {
@@ -16,6 +17,7 @@ export class App extends Component {
             path="/details/:id"
             render={ (props) => <ProductCardPage { ...props } /> }
           />
+          <Route peth="/checkout" component={ CheckoutPage } />
         </Switch>
       </BrowserRouter>
     );
